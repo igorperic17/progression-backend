@@ -1,11 +1,16 @@
+import { updateSourceFileNode } from "typescript";
+
 const { convertCompilerOptionsFromJson } = require("typescript");
 
 const express = require('express');
+const app = express();
 const router = express.Router();
+
+const getDB = require('../src/db');
 
 require("reflect-metadata");
 const { createConnection } = require("typeorm");
-const Song = require("../src/entity/Song.ts");
+const { Song } = require("../src/model/Song");
 
 router.get('/', (req, res) => {
     // return all songs
@@ -13,14 +18,19 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    let song = new Song({
-        title: req.body.title,
-        artist: req.body.artist,
-        chords: req.body.chords
-    });
+
+    const db = await getDB();
+
+    let songRepository = db.getRepository(Song);
+    
+    let song = new Song(
+        req.body.title,
+        req.body.artist,
+        req.body.chords
+    );
     console.log(song);
     try {
-        const savedSong = await song.save();
+        const savedSong = await songRepository.save(song);
         res.json(savedSong);
     } catch (err) {
         console.log(err);

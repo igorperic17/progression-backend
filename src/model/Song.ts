@@ -1,18 +1,8 @@
-const { Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
 
-@Entity()
 export default class Song {
-
-    @PrimaryGeneratedColumn()
     id: number;
-
-    @Column()
     title: string;
-
-    @Column()
     artist: string;
-
-    @Column()
     chords: string;
 
     constructor(title, artist, chords) {
@@ -23,4 +13,6 @@ export default class Song {
 
 }
 
-module.exports = Song;
+module.exports = {
+    Song: Song
+};
