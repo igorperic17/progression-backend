@@ -13,9 +13,13 @@ require("reflect-metadata");
 const { createConnection } = require("typeorm");
 const { Song } = require("../src/model/Song");
 
-router.get('/', (req, res) => {
-    // return all songs
-    res.send('List of all songs.');
+router.get('/', async (req, res) => {
+
+    const db = await DB.getInstance();
+    const allSongs = await db.getRepository(Song).find();
+
+    res.json(allSongs);
+    
 });
 
 router.post('/', async (req, res) => {
