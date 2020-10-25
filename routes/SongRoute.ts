@@ -1,3 +1,4 @@
+import { Db } from "typeorm";
 import { updateSourceFileNode } from "typescript";
 
 const { convertCompilerOptionsFromJson } = require("typescript");
@@ -6,7 +7,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 
-const getDB = require('../src/db');
+const DB = require('../src/db');
 
 require("reflect-metadata");
 const { createConnection } = require("typeorm");
@@ -19,8 +20,8 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
 
-    const db = await getDB();
-
+    const db = await DB.getInstance();
+    
     let songRepository = db.getRepository(Song);
     
     let song = new Song(
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
         console.log(err);
     };
     
-    res.send('New song added.');
+    // res.send('New song added.');
 });
 
 module.exports = router;
