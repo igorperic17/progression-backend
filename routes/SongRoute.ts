@@ -1,3 +1,4 @@
+const { convertCompilerOptionsFromJson } = require("typescript");
 
 const express = require('express');
 const router = express.Router();
@@ -11,15 +12,23 @@ router.get('/', (req, res) => {
     res.send('List of all songs.');
 });
 
-router.post('/', (req, res) => {
-    console.log(Song);
+router.post('/', async (req, res) => {
     let song = new Song({
-        title: 'asd',
-        artist: 'asdasd',
-        chords: 'aasdasdasdad'
+        title: req.body.title,
+        artist: req.body.artist,
+        chords: req.body.chords
     });
+    console.log(song);
+    try {
+        const savedSong = await song.save();
+        res.json(savedSong);
+    } catch (err) {
+        console.log(err);
+    };
+    
     res.send('New song added.');
-    console.log(req.body);
 });
 
 module.exports = router;
+
+export {};

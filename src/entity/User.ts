@@ -1,4 +1,4 @@
-const {Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
+const { Entity, PrimaryGeneratedColumn, Column } = require("typeorm");
 
 @Entity()
 export default class User {
@@ -16,3 +16,5 @@ export default class User {
     age: number;
 
 }
+
+module.exports = User;

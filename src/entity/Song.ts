@@ -15,4 +15,12 @@ export default class Song {
     @Column()
     chords: string;
 
+    constructor(title, artist, chords) {
+        this.title = title;
+        this.artist = artist;
+        this.chords = chords;
+    }
+
 }
+
+module.exports = Song;

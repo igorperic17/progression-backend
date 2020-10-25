@@ -8,16 +8,16 @@ app.get("/", (req, res) => {
 
 app.use(bodyParser.json());
 
-const userRoute = require('./routes/UserRoute');
+const userRoute = require('./routes/UserRoute.ts');
 app.use("/user", userRoute);
-const songRoute = require('./routes/SongRoute');
+const songRoute = require('./routes/SongRoute.ts');
 app.use("/song", songRoute);
 
 app.listen(3000);
 
 
-import "reflect-metadata";
-import { createConnection } from "typeorm";
+require("reflect-metadata");
+const { createConnection } = require('typeorm');
 // import User from "./src/entity/User";
 
 createConnection().then(async connection => {
