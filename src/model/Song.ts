@@ -10,7 +10,6 @@ export default class Song {
         this.artist = artist;
         this.chords = chords;
     }
-
 }
 
 module.exports = {
