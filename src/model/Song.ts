@@ -4,11 +4,14 @@ export default class Song {
     title: string;
     artist: string;
     chords: string;
+    progression: string;
 
-    constructor(title, artist, chords) {
+    constructor(title, artist, chords, progression) {
         this.title = title;
         this.artist = artist;
         this.chords = chords;
+
+        this.progression = progression
     }
 }
 

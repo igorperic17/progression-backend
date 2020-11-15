@@ -18,6 +18,10 @@ module.exports = new EntitySchema({
         },
         chords: {
             type: "varchar"
+        },
+        progression: {
+            type: "varchar",
+            nullable: true
         }
     }
 });

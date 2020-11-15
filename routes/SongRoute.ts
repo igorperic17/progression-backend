@@ -26,7 +26,8 @@ router.post('/', async (req, res) => {
     let song = new Song(
         req.body.title,
         req.body.artist,
-        req.body.chords
+        req.body.chords,
+        req.body.progression
     );
     
     try {
