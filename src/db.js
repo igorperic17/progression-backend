@@ -1,6 +1,5 @@
-require("reflect-metadata");
-const { createConnection } = require('typeorm');
-// import User from "./src/entity/User";
+// require("reflect-metadata");
+// const { createConnection } = require('typeorm');
 
 class DB {
 

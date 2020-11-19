@@ -1,4 +1,5 @@
 import { Db } from "typeorm";
+import { updateSourceFileNode } from "typescript";
 
 const { convertCompilerOptionsFromJson } = require("typescript");
 
@@ -11,27 +12,25 @@ const DB = require('../src/db');
 require("reflect-metadata");
 const { createConnection } = require("typeorm");
 const { Song } = require("../src/model/Song");
+const { SongTag } = require("../src/model/SongTag");
 
 router.get('/', async (req, res) => {
     const db = await DB.getInstance();
-    const allSongs = await db.getRepository(Song).find();
-    res.json(allSongs);
+    const allSongTags = await db.getRepository(SongTag).find();
+    res.json(allSongTags);
 });
 
 router.post('/', async (req, res) => {
     const db = await DB.getInstance();
-    let songRepository = db.getRepository(Song);
+    let songTagRepository = db.getRepository(SongTag);
     
-    let song = new Song(
-        req.body.title,
-        req.body.artist,
-        req.body.chords,
-        req.body.progression
+    let songTag = new SongTag(
+        req.body.text
     );
     
     try {
-        const savedSong = await songRepository.save(song);
-        res.json(savedSong);
+        const savedSongTag = await songTagRepository.save(songTag);
+        res.json(savedSongTag);
     } catch (err) {
         console.log(err);
     };
@@ -39,11 +38,11 @@ router.post('/', async (req, res) => {
 
 router.delete('/:songID', async (req, res) => {
     const db = await DB.getInstance();
-    let songRepository = db.getRepository(Song);
+    let songTagRepository = db.getRepository(Song);
 
     try {
-        const removedSong = await songRepository.remove({id: req.params.songID});
-        res.json(removedSong);
+        const removedSongTag = await songTagRepository.remove({id: req.params.songTagID});
+        res.json(removedSongTag);
     } catch (err) {
         res.json(err);
     }
