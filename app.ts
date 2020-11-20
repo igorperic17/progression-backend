@@ -2,6 +2,7 @@ const express = require('express');
 const app = express(); 
 const bodyParser = require('body-parser');
 const getDB = require('./src/db');
+require('dotenv').config();
 
 // GraphQL
 import { ApolloServer } from 'apollo-server-express';
@@ -16,20 +17,18 @@ app.get("/", (req, res) => {
 app.use(bodyParser.json());
 app.use(cors());
 
-// const userRoute = require('./routes/UserRoute.ts');
-// app.use("/user", userRoute);
-// const songRoute = require('./routes/SongRoute.ts');
-// app.use("/song", songRoute);
-// const songTagRoute = require('./routes/SongTagRoute.ts');
-// app.use("/tag", songTagRoute);
-
 import schema from './src/schema/schema'
 import songs from './src/models'
+
+
+import models, {
+    sequelize
+} from './src/models'
 
 const server = new ApolloServer({
     schema: schema,
     playground: true,
-    context: { models: { songs } } 
+    context: { models: models } 
 });
 
 server.applyMiddleware({
@@ -37,10 +36,12 @@ server.applyMiddleware({
     path: '/graphql'
 });
 
-app.listen({
-    port: 3000
-}, () => {
-    console.log('Apollo Server running on http://localhost:3000/graphql')
+sequelize.sync().then( async () => {
+    app.listen({
+        port: 3000
+    }, () => {
+        console.log('Apollo Server running on http://localhost:3000/graphql')
+    });
 });
 
 // getDB();

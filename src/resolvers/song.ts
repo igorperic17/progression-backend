@@ -1,58 +1,49 @@
-import { v4 as uuid_v4 } from "uuid";
+// import { v4 as uuid_v4 } from "uuid";
 
 export default {
     Query: {
-        songs: (parent, args, {
-            models
-        }) => {
-            return Object.values(models.songs)
+        songs: async (parent, args, { models }) => {
+            return await models.Song.findAll();
         },
 
-        song: (parent, {
-            id
-        }, {
-            models
-        }) => {
-            return models.songs[id]
+        song: (parent, { id }, { models }) => {
+            return models.Song.findByPk(id);
         }
     },
 
     Mutation: {
 
-        createNewSong: (parent, {
-            title,
-            artist,
-            chords,
-            progression
-        }, {
-            models
-        }) => {
-            const id = uuid_v4();
+        createNewSong: async (parent, 
+        { title, artist, chords, progression }, 
+        { models }) => {
+            // const id = uuid_v4();
             const newSong = {
-                id,
+                // id,
                 title,
                 artist,
                 chords,
                 progression
             };
-            models.songs[id] = newSong;
-            return newSong;
+            return await models.Song.create(newSong)
         },
 
-        deleteSong: (parent, {
-            id
-        }, {
-            models
-        }) => {
-            const {
-                [id]: song, ...otherSongs
-            } = models.song
+        deleteSong: async (parent, { id }, { models }) => {
+            return await models.Song.destroy({
+                where: {
+                    id
+                }
+            });
+        },
 
-            if (!song) {
-                return false;
-            }
-            models.songs = otherSongs;
-            return true;
+        updateSong: async (parent, 
+        { id, title, artist, chords, progression }, 
+        { models }) => {
+            await models.Song.update(
+                { title, artist, chords, progression },
+                { where: { id } }
+            );
+            const updatedSong = await models.Song.findByPk(id);
+            return updatedSong;
         }
     }
 }
