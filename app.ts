@@ -36,7 +36,7 @@ server.applyMiddleware({
     path: '/graphql'
 });
 
-sequelize.sync().then( async () => {
+sequelize.sync({ alter: true }).then( async () => {
     app.listen({
         port: 3000
     }, () => {
